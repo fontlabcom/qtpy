@@ -100,11 +100,14 @@ PYSIDE_API = ['pyside']
 # Names of the expected PySide2 api
 PYSIDE2_API = ['pyside2']
 
+# Names of the expected PythonQt api
+PYTHONQT_API = ['pythonqt']
+
 # Detecting if a binding was specified by the user
 binding_specified = QT_API in os.environ
 
 # Setting a default value for QT_API
-os.environ.setdefault(QT_API, 'pyqt5')
+os.environ.setdefault(QT_API, 'pythonqt')
 
 API = os.environ[QT_API].lower()
 initial_api = API
@@ -125,7 +128,8 @@ if os.environ.get('FORCE_QT_API') is not None:
         API = initial_api if initial_api in PYQT4_API else 'pyqt4'
     elif 'PySide' in sys.modules:
         API = initial_api if initial_api in PYSIDE_API else 'pyside'
-
+    elif 'PythonQt' in sys.modules:
+        API = initial_api if initial_api in PYSIDE_API else 'pythonqt'
 
 if API in PYQT5_API:
     try:
@@ -221,7 +225,7 @@ if API != initial_api and binding_specified:
                   'using "{}"'.format(initial_api, API), RuntimeWarning)
 
 API_NAME = {'pyqt5': 'PyQt5', 'pyqt': 'PyQt4', 'pyqt4': 'PyQt4',
-            'pyside': 'PySide', 'pyside2':'PySide2'}[API]
+            'pyside': 'PySide', 'pyside2':'PySide2', 'pythonqt':'PythonQt'}[API]
 
 if PYQT4:
     import sip
